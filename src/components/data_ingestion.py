@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from src.exception import CustomException
 from data_transformation import DataTransformation
-
+from model_trainer import ModelTrainer
 @dataclass
 class DataIngestionConfig:
     train_data_path: str = str(PROJECT_ROOT / "artifact" / "train.csv")
@@ -46,4 +46,8 @@ if __name__ == "__main__":
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
     DataTransformation_obj = DataTransformation()
-    DataTransformation_obj.initiate_data_transformation(train_data, test_data)
+    train_array, test_array, _ = DataTransformation_obj.initiate_data_transformation(
+        train_data, test_data
+    )
+    ModelTrainer_obj = ModelTrainer()
+    print(ModelTrainer_obj.initiate_model_trainer(train_array, test_array))

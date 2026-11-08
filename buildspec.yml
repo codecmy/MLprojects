@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - python src/components/data_ingestion.py
+      - >-
+        python -c "from pathlib import Path; from application import app; assert Path('artifact/model.pkl').is_file() and Path('artifact/preprocessor.pkl').is_file(); client = app.test_client(); assert client.get('/').status_code == 200; response = client.post('/predictdata', data=dict(gender='female', race_ethnicity='group A', parental_level_of_education='some college', lunch='standard', test_preparation_course='completed', reading_score='80', writing_score='85')); assert response.status_code == 200, response.get_data(as_text=True)"
+
+artifacts:
+  files:
+    - application.py
+    - Procfile
+    - requirements.txt
+    - artifact/**/*
+    - src/**/*
+    - templates/**/*
+    - .ebextensions/**/*

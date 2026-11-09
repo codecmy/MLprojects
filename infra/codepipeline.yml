@@ -128,6 +128,13 @@ Resources:
                 Resource: "*"
               - Effect: Allow
                 Action:
+                  - cloudformation:DescribeStackResource
+                  - cloudformation:DescribeStackResources
+                  - cloudformation:DescribeStacks
+                  - cloudformation:GetTemplate
+                Resource: !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/awseb-*/*
+              - Effect: Allow
+                Action:
                   - s3:GetBucketAcl
                   - s3:GetBucketLocation
                   - s3:GetBucketVersioning
